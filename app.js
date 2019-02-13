@@ -3,7 +3,17 @@ var bp=require('body-parser');//for parsing the sbmitted form in JSON format
 
 var urlencodedparser=bp.urlencoded({extended:false});//memorise it. Makes a middleware function
 var app=express();//initializing express
-//routes-for making urls or end points
+//routes-for making urls or end points,
+
+app.set('view engine','ejs');//setting the template engine to ejs(DAY 2)
+app.use('/public', express.static('public'));
+
+app.get('/snehil',function(req,res){
+    res.render('index',{  //sending ejs file directly without extension from views folder
+        'name': 'Snehil' //send data to page from server
+    });
+});
+
 app.get('/', function(aaya,gaya){//aaya- request from client side, gaya- response from server side
     console.log(aaya);//server side print in terminal
     gaya.send('hi client');//sending response to the client in browser
@@ -14,7 +24,13 @@ app.get('/user', function(req,res){//accessible on localhost:3000/user
 })
 
 app.get('/profile/:userid', function(req,res){//here userid is parameter(params)(always declared after :)
-    res.end('Welcome '+req.params.userid);//localhost:3000/profile/snehil
+    // res.end(req.params.userid);//localhost:3000/profile/snehil
+    
+    res.render('profile',{
+        'name':req.params.userid ,
+        'rank':'1',
+        'ques':['abc','addrev','gergovia','def']
+    })
 })
 
 app.post('/data',urlencodedparser, function(req,res){//implementing middleware
